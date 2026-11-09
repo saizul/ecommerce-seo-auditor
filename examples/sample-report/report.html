@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>E-commerce SEO audit</title>
+<style>
+body{font:15px/1.5 system-ui,sans-serif;margin:0;background:#f6f7f9;color:#1c2330}
+main{max-width:1100px;margin:0 auto;padding:24px}
+h1{margin:0 0 4px}h2{margin-top:36px}
+.muted{color:#667085}
+.cards{display:flex;gap:12px;flex-wrap:wrap;margin:18px 0}
+.card{background:#fff;border-radius:10px;padding:14px 18px;min-width:130px;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.card b{display:block;font-size:26px}
+table{border-collapse:collapse;width:100%;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+th,td{padding:8px 12px;text-align:left;border-bottom:1px solid #eceef2;vertical-align:top}
+th{background:#eef0f4;font-size:13px}
+.sev{display:inline-block;padding:1px 8px;border-radius:99px;font-size:12px;font-weight:600;color:#fff}
+.sev-critical{background:#b42318}.sev-high{background:#d9480f}.sev-medium{background:#b7791f}
+.sev-low{background:#2b6cb0}.sev-info{background:#667085}
+.score-A,.score-B{color:#067647}.score-C{color:#b7791f}.score-D,.score-F{color:#b42318}
+details{background:#fff;border-radius:10px;margin:8px 0;padding:8px 14px;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+summary{cursor:pointer;font-weight:600}
+code{background:#eef0f4;padding:1px 5px;border-radius:4px;font-size:13px}
+.url{word-break:break-all}
+</style></head><body><main>
+<h1>E-commerce SEO audit</h1>
+<p class="muted">Generated 2026-11-09T04:50:51Z by ecom-seo-audit 0.1.0</p>
+<div class="cards">
+ <div class="card"><b class="score-D">64.5</b>Site score (D)</div>
+ <div class="card"><b>10</b>Pages audited</div>
+ <div class="card"><b>1</b>Critical</div><div class="card"><b>12</b>High</div><div class="card"><b>32</b>Medium</div><div class="card"><b>7</b>Low</div>
+ 
+</div>
+
+<h2>Prioritised fixes</h2>
+
+<table><tr><th>#</th><th>Severity</th><th>Issue</th><th>Pages</th><th>Est. score gain</th><th>How to fix</th></tr>
+<tr>
+<td>1</td>
+<td><span class="sev sev-high">high</span></td>
+<td><b>No Product structured data</b><br><code>SCHEMA_MISSING</code> <span class="muted">Structured data</span></td>
+<td>4</td><td>+4.8</td>
+<td>Add Product JSON-LD with name, image and offers (price, priceCurrency, availability).<br><span class="muted url">e.g. https://shop.example.com/bn/product/scarf/</span></td>
+</tr><tr>
+<td>2</td>
+<td><span class="sev sev-medium">medium</span></td>
+<td><b>No BreadcrumbList markup</b><br><code>BREADCRUMB_MISSING</code> <span class="muted">Structured data</span></td>
+<td>8</td><td>+4.8</td>
+<td>Add BreadcrumbList structured data mirroring the visible breadcrumb trail.<br><span class="muted url">e.g. https://shop.example.com/product-category/shirts/page/2/</span></td>
+</tr><tr>
+<td>3</td>
+<td><span class="sev sev-medium">medium</span></td>
+<td><b>Product description is thin</b><br><code>THIN_DESCRIPTION</code> <span class="muted">Content</span></td>
+<td>7</td><td>+4.2</td>
+<td>Write a unique description covering materials, size, use cases and care; aim for 100+ words.<br><span class="muted url">e.g. https://shop.example.com/bn/product/scarf/</span></td>
+</tr><tr>
+<td>4</td>
+<td><span class="sev sev-critical">critical</span></td>
+<td><b>Product page is set to noindex</b><br><code>NOINDEX_PRODUCT</code> <span class="muted">Indexing</span></td>
+<td>1</td><td>+2.5</td>
+<td>Remove the noindex directive (meta robots or X-Robots-Tag) from sellable product pages.<br><span class="muted url">e.g. https://shop.example.com/product/hidden-item/</span></td>
+</tr><tr>
+<td>5</td>
+<td><span class="sev sev-medium">medium</span></td>
+<td><b>Meta description missing</b><br><code>META_DESC_MISSING</code> <span class="muted">On-page</span></td>
+<td>3</td><td>+1.8</td>
+<td>Write a unique meta description of roughly 120-160 characters.<br><span class="muted url">e.g. https://shop.example.com/bn/product/scarf/</span></td>
+</tr><tr>
+<td>6</td>
+<td><span class="sev sev-high">high</span></td>
+<td><b>GTIN fails length or check-digit validation</b><br><code>GTIN_INVALID</code> <span class="muted">Structured data</span></td>
+<td>1</td><td>+1.2</td>
+<td>Correct the GTIN; it must be 8, 12, 13 or 14 digits with a valid check digit.<br><span class="muted url">e.g. https://shop.example.com/product/cotton-tee/</span></td>
+</tr><tr>
+<td>7</td>
+<td><span class="sev sev-high">high</span></td>
+<td><b>Parameter URL canonicalises to itself</b><br><code>PARAM_URL_SELF_CANONICAL</code> <span class="muted">Canonical</span></td>
+<td>1</td><td>+1.2</td>
+<td>Point faceted, sorted and tracking URLs at the clean URL, or noindex them.<br><span class="muted url">e.g. https://shop.example.com/product-category/shirts/?orderby=price&amp;filter_color=red</span></td>
+</tr><tr>
+<td>8</td>
+<td><span class="sev sev-high">high</span></td>
+<td><b>priceCurrency missing</b><br><code>PRICE_CURRENCY_MISSING</code> <span class="muted">Structured data</span></td>
+<td>1</td><td>+1.2</td>
+<td>Add offers.priceCurrency as an ISO 4217 code such as BDT or USD.<br><span class="muted url">e.g. https://shop.example.com/product/cotton-tee/</span></td>
+</tr><tr>
+<td>9</td>
+<td><span class="sev sev-high">high</span></td>
+<td><b>Offer price is not a valid number</b><br><code>PRICE_INVALID</code> <span class="muted">Structured data</span></td>
+<td>1</td><td>+1.2</td>
+<td>Use a plain decimal number without currency symbols or thousands separators.<br><span class="muted url">e.g. https://shop.example.com/product/cotton-tee/</span></td>
+</tr><tr>
+<td>10</td>
+<td><span class="sev sev-high">high</span></td>
+<td><b>Visible price differs from structured-data price</b><br><code>PRICE_MISMATCH</code> <span class="muted">Consistency</span></td>
+<td>1</td><td>+1.2</td>
+<td>Make sure the structured-data price is the same price a shopper sees (watch for cached or tax-inclusive values).<br><span class="muted url">e.g. https://store.example.com/products/leather-wallet</span></td>
+</tr><tr>
+<td>11</td>
+<td><span class="sev sev-high">high</span></td>
+<td><b>aggregateRating has no ratingCount or reviewCount</b><br><code>RATING_COUNT_MISSING</code> <span class="muted">Structured data</span></td>
+<td>1</td><td>+1.2</td>
+<td>Add ratingCount or reviewCount to aggregateRating.<br><span class="muted url">e.g. https://shop.example.com/product/cotton-tee/</span></td>
+</tr><tr>
+<td>12</td>
+<td><span class="sev sev-high">high</span></td>
+<td><b>aggregateRating has an invalid ratingValue</b><br><code>RATING_INVALID</code> <span class="muted">Structured data</span></td>
+<td>1</td><td>+1.2</td>
+<td>Provide a numeric ratingValue within the worstRating..bestRating range.<br><span class="muted url">e.g. https://shop.example.com/product/cotton-tee/</span></td>
+</tr><tr>
+<td>13</td>
+<td><span class="sev sev-high">high</span></td>
+<td><b>Availability markup disagrees with page text</b><br><code>STOCK_MISMATCH</code> <span class="muted">Consistency</span></td>
+<td>1</td><td>+1.2</td>
+<td>Drive the availability markup and the on-page stock message from the same stock status.<br><span class="muted url">e.g. https://store.example.com/products/leather-wallet</span></td>
+</tr><tr>
+<td>14</td>
+<td><span class="sev sev-medium">medium</span></td>
+<td><b>Meta description is shared with other pages</b><br><code>DUP_DESCRIPTION</code> <span class="muted">Duplicate content</span></td>
+<td>2</td><td>+1.2</td>
+<td>Write unique meta descriptions or let a template include the product name and attributes.<br><span class="muted url">e.g. https://shop.example.com/product/cotton-tee/</span></td>
+</tr><tr>
+<td>15</td>
+<td><span class="sev sev-medium">medium</span></td>
+<td><b>Title is shared with other pages</b><br><code>DUP_TITLE</code> <span class="muted">Duplicate content</span></td>
+<td>2</td><td>+1.2</td>
+<td>Make titles unique: product name, key attribute and brand.<br><span class="muted url">e.g. https://shop.example.com/product/cotton-tee/</span></td>
+</tr><tr>
+<td>16</td>
+<td><span class="sev sev-medium">medium</span></td>
+<td><b>Unrecognised availability value</b><br><code>AVAILABILITY_INVALID</code> <span class="muted">Structured data</span></td>
+<td>1</td><td>+0.6</td>
+<td>Use a schema.org ItemAvailability URL, for example https://schema.org/InStock.<br><span class="muted url">e.g. https://shop.example.com/product/cotton-tee/</span></td>
+</tr><tr>
+<td>17</td>
+<td><span class="sev sev-medium">medium</span></td>
+<td><b>Brand missing</b><br><code>BRAND_MISSING</code> <span class="muted">Structured data</span></td>
+<td>1</td><td>+0.6</td>
+<td>Add brand (a Brand object with name) to the Product markup.<br><span class="muted url">e.g. https://shop.example.com/product/cotton-tee/</span></td>
+</tr><tr>
+<td>18</td>
+<td><span class="sev sev-medium">medium</span></td>
+<td><b>No canonical URL</b><br><code>CANONICAL_MISSING</code> <span class="muted">Canonical</span></td>
+<td>1</td><td>+0.6</td>
+<td>Add a self-referencing rel=canonical to every indexable page.<br><span class="muted url">e.g. https://shop.example.com/product/cotton-tee/</span></td>
+</tr><tr>
+<td>19</td>
+<td><span class="sev sev-medium">medium</span></td>
+<td><b>Invalid hreflang language/region code</b><br><code>HREFLANG_INVALID_CODE</code> <span class="muted">hreflang</span></td>
+<td>1</td><td>+0.6</td>
+<td>Use ISO 639-1 language codes with optional ISO 3166-1 region, e.g. en-GB, or x-default.<br><span class="muted url">e.g. https://shop.example.com/product/scarf/</span></td>
+</tr><tr>
+<td>20</td>
+<td><span class="sev sev-medium">medium</span></td>
+<td><b>hreflang URL is not absolute</b><br><code>HREFLANG_NOT_ABSOLUTE</code> <span class="muted">hreflang</span></td>
+<td>1</td><td>+0.6</td>
+<td>Use fully qualified URLs in hreflang annotations.<br><span class="muted url">e.g. https://shop.example.com/product/scarf/</span></td>
+</tr><tr>
+<td>21</td>
+<td><span class="sev sev-medium">medium</span></td>
+<td><b>Low image alt-text coverage</b><br><code>IMAGE_ALT_LOW</code> <span class="muted">Images</span></td>
+<td>1</td><td>+0.6</td>
+<td>Add descriptive alt text to product images (name, colour, angle).<br><span class="muted url">e.g. https://shop.example.com/product/cotton-tee/</span></td>
+</tr><tr>
+<td>22</td>
+<td><span class="sev sev-medium">medium</span></td>
+<td><b>Paginated page canonicalises to page 1</b><br><code>PAGINATION_CANONICAL_TO_FIRST</code> <span class="muted">Pagination</span></td>
+<td>1</td><td>+0.6</td>
+<td>Give each paginated page a self-referencing canonical so products on later pages stay discoverable.<br><span class="muted url">e.g. https://shop.example.com/product-category/shirts/page/2/</span></td>
+</tr><tr>
+<td>23</td>
+<td><span class="sev sev-medium">medium</span></td>
+<td><b>priceValidUntil is in the past</b><br><code>PRICE_VALID_UNTIL_EXPIRED</code> <span class="muted">Structured data</span></td>
+<td>1</td><td>+0.6</td>
+<td>Update priceValidUntil to a future date or generate it dynamically.<br><span class="muted url">e.g. https://shop.example.com/product/cotton-tee/</span></td>
+</tr><tr>
+<td>24</td>
+<td><span class="sev sev-medium">medium</span></td>
+<td><b>Review markup count exceeds the aggregateRating count</b><br><code>REVIEW_COUNT_INCONSISTENT</code> <span class="muted">Structured data</span></td>
+<td>1</td><td>+0.6</td>
+<td>Make reviewCount/ratingCount at least as large as the number of marked-up reviews.<br><span class="muted url">e.g. https://shop.example.com/product/ceramic-mug/</span></td>
+</tr><tr>
+<td>25</td>
+<td><span class="sev sev-medium">medium</span></td>
+<td><b>Review is missing author or rating</b><br><code>REVIEW_INVALID</code> <span class="muted">Structured data</span></td>
+<td>1</td><td>+0.6</td>
+<td>Each Review needs an author and reviewRating.ratingValue.<br><span class="muted url">e.g. https://shop.example.com/product/ceramic-mug/</span></td>
+</tr><tr>
+<td>26</td>
+<td><span class="sev sev-low">low</span></td>
+<td><b>No shipping or return policy markup</b><br><code>SHIPPING_RETURN_MISSING</code> <span class="muted">Structured data</span></td>
+<td>3</td><td>+0.6</td>
+<td>Add shippingDetails and hasMerchantReturnPolicy to the Offer for merchant listing features.<br><span class="muted url">e.g. https://shop.example.com/product/ceramic-mug/</span></td>
+</tr><tr>
+<td>27</td>
+<td><span class="sev sev-low">low</span></td>
+<td><b>Product description missing in markup</b><br><code>PRODUCT_DESCRIPTION_MISSING</code> <span class="muted">Structured data</span></td>
+<td>2</td><td>+0.4</td>
+<td>Add a description property to the Product markup.<br><span class="muted url">e.g. https://shop.example.com/product/ceramic-mug/</span></td>
+</tr><tr>
+<td>28</td>
+<td><span class="sev sev-low">low</span></td>
+<td><b>More than one H1 heading</b><br><code>H1_MULTIPLE</code> <span class="muted">On-page</span></td>
+<td>1</td><td>+0.2</td>
+<td>Use a single H1 per page.<br><span class="muted url">e.g. https://shop.example.com/product/cotton-tee/</span></td>
+</tr><tr>
+<td>29</td>
+<td><span class="sev sev-low">low</span></td>
+<td><b>priceValidUntil missing</b><br><code>PRICE_VALID_UNTIL_MISSING</code> <span class="muted">Structured data</span></td>
+<td>1</td><td>+0.2</td>
+<td>Add offers.priceValidUntil (ISO 8601 date) so price snippets stay eligible.<br><span class="muted url">e.g. https://shop.example.com/product/ceramic-mug/</span></td>
+</tr><tr>
+<td>30</td>
+<td><span class="sev sev-info">info</span></td>
+<td><b>No x-default hreflang</b><br><code>HREFLANG_NO_XDEFAULT</code> <span class="muted">hreflang</span></td>
+<td>1</td><td>+0.0</td>
+<td>Consider adding an x-default for visitors who match no listed locale.<br><span class="muted url">e.g. https://shop.example.com/product/scarf/</span></td>
+</tr></table>
+
+
+<h2>Pages</h2>
+
+<details>
+<summary><span class="score-B">88</span> &middot; category &middot; <span class="url">https://shop.example.com/product-category/shirts/page/2/</span> <span class="muted">(2 issues)</span></summary>
+<table><tr>
+<td><span class="sev sev-medium">medium</span></td>
+<td><code>PAGINATION_CANONICAL_TO_FIRST</code></td><td>Paginated page canonicalises to page 1<br><span class="muted">page 2 -&gt; https://shop.example.com/product-category/shirts/</span></td>
+</tr><tr>
+<td><span class="sev sev-medium">medium</span></td>
+<td><code>BREADCRUMB_MISSING</code></td><td>No BreadcrumbList markup</td>
+</tr></table>
+</details>
+
+<details>
+<summary><span class="score-B">82</span> &middot; category &middot; <span class="url">https://shop.example.com/product-category/shirts/?orderby=price&amp;filter_color=red</span> <span class="muted">(2 issues)</span></summary>
+<table><tr>
+<td><span class="sev sev-high">high</span></td>
+<td><code>PARAM_URL_SELF_CANONICAL</code></td><td>Parameter URL canonicalises to itself<br><span class="muted">params: orderby, filter_color</span></td>
+</tr><tr>
+<td><span class="sev sev-medium">medium</span></td>
+<td><code>BREADCRUMB_MISSING</code></td><td>No BreadcrumbList markup</td>
+</tr></table>
+</details>
+
+<details>
+<summary><span class="score-C">70</span> &middot; product &middot; <span class="url">https://shop.example.com/bn/product/scarf/</span> <span class="muted">(4 issues)</span></summary>
+<table><tr>
+<td><span class="sev sev-high">high</span></td>
+<td><code>SCHEMA_MISSING</code></td><td>No Product structured data</td>
+</tr><tr>
+<td><span class="sev sev-medium">medium</span></td>
+<td><code>META_DESC_MISSING</code></td><td>Meta description missing</td>
+</tr><tr>
+<td><span class="sev sev-medium">medium</span></td>
+<td><code>BREADCRUMB_MISSING</code></td><td>No BreadcrumbList markup</td>
+</tr><tr>
+<td><span class="sev sev-medium">medium</span></td>
+<td><code>THIN_DESCRIPTION</code></td><td>Product description is thin<br><span class="muted">0 words (minimum 50)</span></td>
+</tr></table>
+</details>
+
+<details open>
+<summary><span class="score-F">58</span> &middot; product &middot; <span class="url">https://shop.example.com/product/scarf/</span> <span class="muted">(7 issues)</span></summary>
+<table><tr>
+<td><span class="sev sev-high">high</span></td>
+<td><code>SCHEMA_MISSING</code></td><td>No Product structured data</td>
+</tr><tr>
+<td><span class="sev sev-medium">medium</span></td>
+<td><code>META_DESC_MISSING</code></td><td>Meta description missing</td>
+</tr><tr>
+<td><span class="sev sev-medium">medium</span></td>
+<td><code>BREADCRUMB_MISSING</code></td><td>No BreadcrumbList markup</td>
+</tr><tr>
+<td><span class="sev sev-medium">medium</span></td>
+<td><code>HREFLANG_INVALID_CODE</code></td><td>Invalid hreflang language/region code<br><span class="muted">english</span></td>
+</tr><tr>
+<td><span class="sev sev-medium">medium</span></td>
+<td><code>HREFLANG_NOT_ABSOLUTE</code></td><td>hreflang URL is not absolute</td>
+</tr><tr>
+<td><span class="sev sev-medium">medium</span></td>
+<td><code>THIN_DESCRIPTION</code></td><td>Product description is thin<br><span class="muted">0 words (minimum 50)</span></td>
+</tr><tr>
+<td><span class="sev sev-info">info</span></td>
+<td><code>HREFLANG_NO_XDEFAULT</code></td><td>No x-default hreflang</td>
+</tr></table>
+</details>
+
+<details>
+<summary><span class="score-C">70</span> &middot; product &middot; <span class="url">https://shop.example.com/product/ceramic-mug/</span> <span class="muted">(7 issues)</span></summary>
+<table><tr>
+<td><span class="sev sev-medium">medium</span></td>
+<td><code>BREADCRUMB_MISSING</code></td><td>No BreadcrumbList markup</td>
+</tr><tr>
+<td><span class="sev sev-medium">medium</span></td>
+<td><code>REVIEW_COUNT_INCONSISTENT</code></td><td>Review markup count exceeds the aggregateRating count<br><span class="muted">3 reviews marked up, count says 2</span></td>
+</tr><tr>
+<td><span class="sev sev-medium">medium</span></td>
+<td><code>REVIEW_INVALID</code></td><td>Review is missing author or rating<br><span class="muted">1 of 3 reviews incomplete</span></td>
+</tr><tr>
+<td><span class="sev sev-medium">medium</span></td>
+<td><code>THIN_DESCRIPTION</code></td><td>Product description is thin<br><span class="muted">0 words (minimum 50)</span></td>
+</tr><tr>
+<td><span class="sev sev-low">low</span></td>
+<td><code>PRODUCT_DESCRIPTION_MISSING</code></td><td>Product description missing in markup</td>
+</tr><tr>
+<td><span class="sev sev-low">low</span></td>
+<td><code>PRICE_VALID_UNTIL_MISSING</code></td><td>priceValidUntil missing</td>
+</tr><tr>
+<td><span class="sev sev-low">low</span></td>
+<td><code>SHIPPING_RETURN_MISSING</code></td><td>No shipping or return policy markup</td>
+</tr></table>
+</details>
+
+<details open>
+<summary><span class="score-F">45</span> &middot; product &middot; <span class="url">https://shop.example.com/product/hidden-item/</span> <span class="muted">(5 issues)</span></summary>
+<table><tr>
+<td><span class="sev sev-critical">critical</span></td>
+<td><code>NOINDEX_PRODUCT</code></td><td>Product page is set to noindex<br><span class="muted">robots: follow, noindex</span></td>
+</tr><tr>
+<td><span class="sev sev-high">high</span></td>
+<td><code>SCHEMA_MISSING</code></td><td>No Product structured data</td>
+</tr><tr>
+<td><span class="sev sev-medium">medium</span></td>
+<td><code>META_DESC_MISSING</code></td><td>Meta description missing</td>
+</tr><tr>
+<td><span class="sev sev-medium">medium</span></td>
+<td><code>BREADCRUMB_MISSING</code></td><td>No BreadcrumbList markup</td>
+</tr><tr>
+<td><span class="sev sev-medium">medium</span></td>
+<td><code>THIN_DESCRIPTION</code></td><td>Product description is thin<br><span class="muted">0 words (minimum 50)</span></td>
+</tr></table>
+</details>
+
+<details open>
+<summary><span class="score-D">68</span> &middot; product &middot; <span class="url">https://store.example.com/products/leather-wallet</span> <span class="muted">(4 issues)</span></summary>
+<table><tr>
+<td><span class="sev sev-high">high</span></td>
+<td><code>PRICE_MISMATCH</code></td><td>Visible price differs from structured-data price<br><span class="muted">markup 2500.00 vs page 2799.00</span></td>
+</tr><tr>
+<td><span class="sev sev-high">high</span></td>
+<td><code>STOCK_MISMATCH</code></td><td>Availability markup disagrees with page text<br><span class="muted">page says out of stock, markup says InStock</span></td>
+</tr><tr>
+<td><span class="sev sev-medium">medium</span></td>
+<td><code>THIN_DESCRIPTION</code></td><td>Product description is thin<br><span class="muted">4 words (minimum 50)</span></td>
+</tr><tr>
+<td><span class="sev sev-low">low</span></td>
+<td><code>SHIPPING_RETURN_MISSING</code></td><td>No shipping or return policy markup</td>
+</tr></table>
+</details>
+
+<details open>
+<summary><span class="score-F">0</span> &middot; product &middot; <span class="url">https://shop.example.com/product/cotton-tee/</span> <span class="muted">(17 issues)</span></summary>
+<table><tr>
+<td><span class="sev sev-high">high</span></td>
+<td><code>GTIN_INVALID</code></td><td>GTIN fails length or check-digit validation<br><span class="muted">gtin13=4006381333932: bad check digit (expected 1)</span></td>
+</tr><tr>
+<td><span class="sev sev-high">high</span></td>
+<td><code>PRICE_INVALID</code></td><td>Offer price is not a valid number<br><span class="muted">price=&#39;1,299.00&#39;</span></td>
+</tr><tr>
+<td><span class="sev sev-high">high</span></td>
+<td><code>PRICE_CURRENCY_MISSING</code></td><td>priceCurrency missing</td>
+</tr><tr>
+<td><span class="sev sev-high">high</span></td>
+<td><code>RATING_INVALID</code></td><td>aggregateRating has an invalid ratingValue<br><span class="muted">ratingValue=&#39;6.5&#39; (best 5.0)</span></td>
+</tr><tr>
+<td><span class="sev sev-high">high</span></td>
+<td><code>RATING_COUNT_MISSING</code></td><td>aggregateRating has no ratingCount or reviewCount</td>
+</tr><tr>
+<td><span class="sev sev-medium">medium</span></td>
+<td><code>CANONICAL_MISSING</code></td><td>No canonical URL</td>
+</tr><tr>
+<td><span class="sev sev-medium">medium</span></td>
+<td><code>IMAGE_ALT_LOW</code></td><td>Low image alt-text coverage<br><span class="muted">1 of 3 images have alt text (33%)</span></td>
+</tr><tr>
+<td><span class="sev sev-medium">medium</span></td>
+<td><code>BREADCRUMB_MISSING</code></td><td>No BreadcrumbList markup</td>
+</tr><tr>
+<td><span class="sev sev-medium">medium</span></td>
+<td><code>BRAND_MISSING</code></td><td>Brand missing</td>
+</tr><tr>
+<td><span class="sev sev-medium">medium</span></td>
+<td><code>AVAILABILITY_INVALID</code></td><td>Unrecognised availability value<br><span class="muted">availability=&#39;In stock&#39;</span></td>
+</tr><tr>
+<td><span class="sev sev-medium">medium</span></td>
+<td><code>PRICE_VALID_UNTIL_EXPIRED</code></td><td>priceValidUntil is in the past<br><span class="muted">priceValidUntil=2020-01-01</span></td>
+</tr><tr>
+<td><span class="sev sev-medium">medium</span></td>
+<td><code>THIN_DESCRIPTION</code></td><td>Product description is thin<br><span class="muted">2 words (minimum 50)</span></td>
+</tr><tr>
+<td><span class="sev sev-medium">medium</span></td>
+<td><code>DUP_TITLE</code></td><td>Title is shared with other pages<br><span class="muted">shared with 1 other page(s), e.g. https://shop.example.com/product/cotton-tee-v2/</span></td>
+</tr><tr>
+<td><span class="sev sev-medium">medium</span></td>
+<td><code>DUP_DESCRIPTION</code></td><td>Meta description is shared with other pages<br><span class="muted">shared with 1 other page(s), e.g. https://shop.example.com/product/cotton-tee-v2/</span></td>
+</tr><tr>
+<td><span class="sev sev-low">low</span></td>
+<td><code>H1_MULTIPLE</code></td><td>More than one H1 heading<br><span class="muted">2 H1 elements</span></td>
+</tr><tr>
+<td><span class="sev sev-low">low</span></td>
+<td><code>PRODUCT_DESCRIPTION_MISSING</code></td><td>Product description missing in markup</td>
+</tr><tr>
+<td><span class="sev sev-low">low</span></td>
+<td><code>SHIPPING_RETURN_MISSING</code></td><td>No shipping or return policy markup</td>
+</tr></table>
+</details>
+
+<details open>
+<summary><span class="score-D">64</span> &middot; product &middot; <span class="url">https://shop.example.com/product/cotton-tee-v2/</span> <span class="muted">(5 issues)</span></summary>
+<table><tr>
+<td><span class="sev sev-high">high</span></td>
+<td><code>SCHEMA_MISSING</code></td><td>No Product structured data</td>
+</tr><tr>
+<td><span class="sev sev-medium">medium</span></td>
+<td><code>BREADCRUMB_MISSING</code></td><td>No BreadcrumbList markup</td>
+</tr><tr>
+<td><span class="sev sev-medium">medium</span></td>
+<td><code>THIN_DESCRIPTION</code></td><td>Product description is thin<br><span class="muted">0 words (minimum 50)</span></td>
+</tr><tr>
+<td><span class="sev sev-medium">medium</span></td>
+<td><code>DUP_TITLE</code></td><td>Title is shared with other pages<br><span class="muted">shared with 1 other page(s), e.g. https://shop.example.com/product/cotton-tee/</span></td>
+</tr><tr>
+<td><span class="sev sev-medium">medium</span></td>
+<td><code>DUP_DESCRIPTION</code></td><td>Meta description is shared with other pages<br><span class="muted">shared with 1 other page(s), e.g. https://shop.example.com/product/cotton-tee/</span></td>
+</tr></table>
+</details>
+
+<details>
+<summary><span class="score-A">100</span> &middot; product &middot; <span class="url">https://shop.example.com/product/linen-shirt/</span> <span class="muted">(0 issues)</span></summary>
+<p>No issues.</p>
+</details>
+
+
+
+</main></body></html>

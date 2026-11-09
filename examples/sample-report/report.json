@@ -1,0 +1,994 @@
+{
+  "tool": "ecom-seo-audit",
+  "version": "0.1.0",
+  "generated_at": "2026-11-09T04:50:51Z",
+  "summary": {
+    "score": 64.5,
+    "grade": "D",
+    "pages_audited": 10,
+    "pages_skipped": 0,
+    "severity_counts": {
+      "critical": 1,
+      "high": 12,
+      "medium": 32,
+      "low": 7,
+      "info": 1
+    },
+    "category_counts": {
+      "Pagination": 1,
+      "Structured data": 28,
+      "Canonical": 2,
+      "On-page": 4,
+      "Content": 7,
+      "hreflang": 3,
+      "Indexing": 1,
+      "Consistency": 2,
+      "Images": 1,
+      "Duplicate content": 4
+    }
+  },
+  "fixes": [
+    {
+      "rank": 1,
+      "code": "SCHEMA_MISSING",
+      "severity": "high",
+      "category": "Structured data",
+      "title": "No Product structured data",
+      "fix": "Add Product JSON-LD with name, image and offers (price, priceCurrency, availability).",
+      "pages_affected": 4,
+      "estimated_score_gain": 4.8,
+      "examples": [
+        "https://shop.example.com/bn/product/scarf/",
+        "https://shop.example.com/product/scarf/",
+        "https://shop.example.com/product/hidden-item/"
+      ]
+    },
+    {
+      "rank": 2,
+      "code": "BREADCRUMB_MISSING",
+      "severity": "medium",
+      "category": "Structured data",
+      "title": "No BreadcrumbList markup",
+      "fix": "Add BreadcrumbList structured data mirroring the visible breadcrumb trail.",
+      "pages_affected": 8,
+      "estimated_score_gain": 4.8,
+      "examples": [
+        "https://shop.example.com/product-category/shirts/page/2/",
+        "https://shop.example.com/product-category/shirts/?orderby=price&filter_color=red",
+        "https://shop.example.com/bn/product/scarf/"
+      ]
+    },
+    {
+      "rank": 3,
+      "code": "THIN_DESCRIPTION",
+      "severity": "medium",
+      "category": "Content",
+      "title": "Product description is thin",
+      "fix": "Write a unique description covering materials, size, use cases and care; aim for 100+ words.",
+      "pages_affected": 7,
+      "estimated_score_gain": 4.2,
+      "examples": [
+        "https://shop.example.com/bn/product/scarf/",
+        "https://shop.example.com/product/scarf/",
+        "https://shop.example.com/product/ceramic-mug/"
+      ]
+    },
+    {
+      "rank": 4,
+      "code": "NOINDEX_PRODUCT",
+      "severity": "critical",
+      "category": "Indexing",
+      "title": "Product page is set to noindex",
+      "fix": "Remove the noindex directive (meta robots or X-Robots-Tag) from sellable product pages.",
+      "pages_affected": 1,
+      "estimated_score_gain": 2.5,
+      "examples": [
+        "https://shop.example.com/product/hidden-item/"
+      ]
+    },
+    {
+      "rank": 5,
+      "code": "META_DESC_MISSING",
+      "severity": "medium",
+      "category": "On-page",
+      "title": "Meta description missing",
+      "fix": "Write a unique meta description of roughly 120-160 characters.",
+      "pages_affected": 3,
+      "estimated_score_gain": 1.8,
+      "examples": [
+        "https://shop.example.com/bn/product/scarf/",
+        "https://shop.example.com/product/scarf/",
+        "https://shop.example.com/product/hidden-item/"
+      ]
+    },
+    {
+      "rank": 6,
+      "code": "GTIN_INVALID",
+      "severity": "high",
+      "category": "Structured data",
+      "title": "GTIN fails length or check-digit validation",
+      "fix": "Correct the GTIN; it must be 8, 12, 13 or 14 digits with a valid check digit.",
+      "pages_affected": 1,
+      "estimated_score_gain": 1.2,
+      "examples": [
+        "https://shop.example.com/product/cotton-tee/"
+      ]
+    },
+    {
+      "rank": 7,
+      "code": "PARAM_URL_SELF_CANONICAL",
+      "severity": "high",
+      "category": "Canonical",
+      "title": "Parameter URL canonicalises to itself",
+      "fix": "Point faceted, sorted and tracking URLs at the clean URL, or noindex them.",
+      "pages_affected": 1,
+      "estimated_score_gain": 1.2,
+      "examples": [
+        "https://shop.example.com/product-category/shirts/?orderby=price&filter_color=red"
+      ]
+    },
+    {
+      "rank": 8,
+      "code": "PRICE_CURRENCY_MISSING",
+      "severity": "high",
+      "category": "Structured data",
+      "title": "priceCurrency missing",
+      "fix": "Add offers.priceCurrency as an ISO 4217 code such as BDT or USD.",
+      "pages_affected": 1,
+      "estimated_score_gain": 1.2,
+      "examples": [
+        "https://shop.example.com/product/cotton-tee/"
+      ]
+    },
+    {
+      "rank": 9,
+      "code": "PRICE_INVALID",
+      "severity": "high",
+      "category": "Structured data",
+      "title": "Offer price is not a valid number",
+      "fix": "Use a plain decimal number without currency symbols or thousands separators.",
+      "pages_affected": 1,
+      "estimated_score_gain": 1.2,
+      "examples": [
+        "https://shop.example.com/product/cotton-tee/"
+      ]
+    },
+    {
+      "rank": 10,
+      "code": "PRICE_MISMATCH",
+      "severity": "high",
+      "category": "Consistency",
+      "title": "Visible price differs from structured-data price",
+      "fix": "Make sure the structured-data price is the same price a shopper sees (watch for cached or tax-inclusive values).",
+      "pages_affected": 1,
+      "estimated_score_gain": 1.2,
+      "examples": [
+        "https://store.example.com/products/leather-wallet"
+      ]
+    },
+    {
+      "rank": 11,
+      "code": "RATING_COUNT_MISSING",
+      "severity": "high",
+      "category": "Structured data",
+      "title": "aggregateRating has no ratingCount or reviewCount",
+      "fix": "Add ratingCount or reviewCount to aggregateRating.",
+      "pages_affected": 1,
+      "estimated_score_gain": 1.2,
+      "examples": [
+        "https://shop.example.com/product/cotton-tee/"
+      ]
+    },
+    {
+      "rank": 12,
+      "code": "RATING_INVALID",
+      "severity": "high",
+      "category": "Structured data",
+      "title": "aggregateRating has an invalid ratingValue",
+      "fix": "Provide a numeric ratingValue within the worstRating..bestRating range.",
+      "pages_affected": 1,
+      "estimated_score_gain": 1.2,
+      "examples": [
+        "https://shop.example.com/product/cotton-tee/"
+      ]
+    },
+    {
+      "rank": 13,
+      "code": "STOCK_MISMATCH",
+      "severity": "high",
+      "category": "Consistency",
+      "title": "Availability markup disagrees with page text",
+      "fix": "Drive the availability markup and the on-page stock message from the same stock status.",
+      "pages_affected": 1,
+      "estimated_score_gain": 1.2,
+      "examples": [
+        "https://store.example.com/products/leather-wallet"
+      ]
+    },
+    {
+      "rank": 14,
+      "code": "DUP_DESCRIPTION",
+      "severity": "medium",
+      "category": "Duplicate content",
+      "title": "Meta description is shared with other pages",
+      "fix": "Write unique meta descriptions or let a template include the product name and attributes.",
+      "pages_affected": 2,
+      "estimated_score_gain": 1.2,
+      "examples": [
+        "https://shop.example.com/product/cotton-tee/",
+        "https://shop.example.com/product/cotton-tee-v2/"
+      ]
+    },
+    {
+      "rank": 15,
+      "code": "DUP_TITLE",
+      "severity": "medium",
+      "category": "Duplicate content",
+      "title": "Title is shared with other pages",
+      "fix": "Make titles unique: product name, key attribute and brand.",
+      "pages_affected": 2,
+      "estimated_score_gain": 1.2,
+      "examples": [
+        "https://shop.example.com/product/cotton-tee/",
+        "https://shop.example.com/product/cotton-tee-v2/"
+      ]
+    },
+    {
+      "rank": 16,
+      "code": "AVAILABILITY_INVALID",
+      "severity": "medium",
+      "category": "Structured data",
+      "title": "Unrecognised availability value",
+      "fix": "Use a schema.org ItemAvailability URL, for example https://schema.org/InStock.",
+      "pages_affected": 1,
+      "estimated_score_gain": 0.6,
+      "examples": [
+        "https://shop.example.com/product/cotton-tee/"
+      ]
+    },
+    {
+      "rank": 17,
+      "code": "BRAND_MISSING",
+      "severity": "medium",
+      "category": "Structured data",
+      "title": "Brand missing",
+      "fix": "Add brand (a Brand object with name) to the Product markup.",
+      "pages_affected": 1,
+      "estimated_score_gain": 0.6,
+      "examples": [
+        "https://shop.example.com/product/cotton-tee/"
+      ]
+    },
+    {
+      "rank": 18,
+      "code": "CANONICAL_MISSING",
+      "severity": "medium",
+      "category": "Canonical",
+      "title": "No canonical URL",
+      "fix": "Add a self-referencing rel=canonical to every indexable page.",
+      "pages_affected": 1,
+      "estimated_score_gain": 0.6,
+      "examples": [
+        "https://shop.example.com/product/cotton-tee/"
+      ]
+    },
+    {
+      "rank": 19,
+      "code": "HREFLANG_INVALID_CODE",
+      "severity": "medium",
+      "category": "hreflang",
+      "title": "Invalid hreflang language/region code",
+      "fix": "Use ISO 639-1 language codes with optional ISO 3166-1 region, e.g. en-GB, or x-default.",
+      "pages_affected": 1,
+      "estimated_score_gain": 0.6,
+      "examples": [
+        "https://shop.example.com/product/scarf/"
+      ]
+    },
+    {
+      "rank": 20,
+      "code": "HREFLANG_NOT_ABSOLUTE",
+      "severity": "medium",
+      "category": "hreflang",
+      "title": "hreflang URL is not absolute",
+      "fix": "Use fully qualified URLs in hreflang annotations.",
+      "pages_affected": 1,
+      "estimated_score_gain": 0.6,
+      "examples": [
+        "https://shop.example.com/product/scarf/"
+      ]
+    },
+    {
+      "rank": 21,
+      "code": "IMAGE_ALT_LOW",
+      "severity": "medium",
+      "category": "Images",
+      "title": "Low image alt-text coverage",
+      "fix": "Add descriptive alt text to product images (name, colour, angle).",
+      "pages_affected": 1,
+      "estimated_score_gain": 0.6,
+      "examples": [
+        "https://shop.example.com/product/cotton-tee/"
+      ]
+    },
+    {
+      "rank": 22,
+      "code": "PAGINATION_CANONICAL_TO_FIRST",
+      "severity": "medium",
+      "category": "Pagination",
+      "title": "Paginated page canonicalises to page 1",
+      "fix": "Give each paginated page a self-referencing canonical so products on later pages stay discoverable.",
+      "pages_affected": 1,
+      "estimated_score_gain": 0.6,
+      "examples": [
+        "https://shop.example.com/product-category/shirts/page/2/"
+      ]
+    },
+    {
+      "rank": 23,
+      "code": "PRICE_VALID_UNTIL_EXPIRED",
+      "severity": "medium",
+      "category": "Structured data",
+      "title": "priceValidUntil is in the past",
+      "fix": "Update priceValidUntil to a future date or generate it dynamically.",
+      "pages_affected": 1,
+      "estimated_score_gain": 0.6,
+      "examples": [
+        "https://shop.example.com/product/cotton-tee/"
+      ]
+    },
+    {
+      "rank": 24,
+      "code": "REVIEW_COUNT_INCONSISTENT",
+      "severity": "medium",
+      "category": "Structured data",
+      "title": "Review markup count exceeds the aggregateRating count",
+      "fix": "Make reviewCount/ratingCount at least as large as the number of marked-up reviews.",
+      "pages_affected": 1,
+      "estimated_score_gain": 0.6,
+      "examples": [
+        "https://shop.example.com/product/ceramic-mug/"
+      ]
+    },
+    {
+      "rank": 25,
+      "code": "REVIEW_INVALID",
+      "severity": "medium",
+      "category": "Structured data",
+      "title": "Review is missing author or rating",
+      "fix": "Each Review needs an author and reviewRating.ratingValue.",
+      "pages_affected": 1,
+      "estimated_score_gain": 0.6,
+      "examples": [
+        "https://shop.example.com/product/ceramic-mug/"
+      ]
+    },
+    {
+      "rank": 26,
+      "code": "SHIPPING_RETURN_MISSING",
+      "severity": "low",
+      "category": "Structured data",
+      "title": "No shipping or return policy markup",
+      "fix": "Add shippingDetails and hasMerchantReturnPolicy to the Offer for merchant listing features.",
+      "pages_affected": 3,
+      "estimated_score_gain": 0.6,
+      "examples": [
+        "https://shop.example.com/product/ceramic-mug/",
+        "https://store.example.com/products/leather-wallet",
+        "https://shop.example.com/product/cotton-tee/"
+      ]
+    },
+    {
+      "rank": 27,
+      "code": "PRODUCT_DESCRIPTION_MISSING",
+      "severity": "low",
+      "category": "Structured data",
+      "title": "Product description missing in markup",
+      "fix": "Add a description property to the Product markup.",
+      "pages_affected": 2,
+      "estimated_score_gain": 0.4,
+      "examples": [
+        "https://shop.example.com/product/ceramic-mug/",
+        "https://shop.example.com/product/cotton-tee/"
+      ]
+    },
+    {
+      "rank": 28,
+      "code": "H1_MULTIPLE",
+      "severity": "low",
+      "category": "On-page",
+      "title": "More than one H1 heading",
+      "fix": "Use a single H1 per page.",
+      "pages_affected": 1,
+      "estimated_score_gain": 0.2,
+      "examples": [
+        "https://shop.example.com/product/cotton-tee/"
+      ]
+    },
+    {
+      "rank": 29,
+      "code": "PRICE_VALID_UNTIL_MISSING",
+      "severity": "low",
+      "category": "Structured data",
+      "title": "priceValidUntil missing",
+      "fix": "Add offers.priceValidUntil (ISO 8601 date) so price snippets stay eligible.",
+      "pages_affected": 1,
+      "estimated_score_gain": 0.2,
+      "examples": [
+        "https://shop.example.com/product/ceramic-mug/"
+      ]
+    },
+    {
+      "rank": 30,
+      "code": "HREFLANG_NO_XDEFAULT",
+      "severity": "info",
+      "category": "hreflang",
+      "title": "No x-default hreflang",
+      "fix": "Consider adding an x-default for visitors who match no listed locale.",
+      "pages_affected": 1,
+      "estimated_score_gain": 0.0,
+      "examples": [
+        "https://shop.example.com/product/scarf/"
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "url": "https://shop.example.com/product-category/shirts/page/2/",
+      "type": "category",
+      "status": 200,
+      "score": 88.0,
+      "issues": [
+        {
+          "code": "PAGINATION_CANONICAL_TO_FIRST",
+          "severity": "medium",
+          "category": "Pagination",
+          "title": "Paginated page canonicalises to page 1",
+          "detail": "page 2 -> https://shop.example.com/product-category/shirts/",
+          "fix": "Give each paginated page a self-referencing canonical so products on later pages stay discoverable.",
+          "url": "https://shop.example.com/product-category/shirts/page/2/"
+        },
+        {
+          "code": "BREADCRUMB_MISSING",
+          "severity": "medium",
+          "category": "Structured data",
+          "title": "No BreadcrumbList markup",
+          "detail": "",
+          "fix": "Add BreadcrumbList structured data mirroring the visible breadcrumb trail.",
+          "url": "https://shop.example.com/product-category/shirts/page/2/"
+        }
+      ]
+    },
+    {
+      "url": "https://shop.example.com/product-category/shirts/?orderby=price&filter_color=red",
+      "type": "category",
+      "status": 200,
+      "score": 82.0,
+      "issues": [
+        {
+          "code": "PARAM_URL_SELF_CANONICAL",
+          "severity": "high",
+          "category": "Canonical",
+          "title": "Parameter URL canonicalises to itself",
+          "detail": "params: orderby, filter_color",
+          "fix": "Point faceted, sorted and tracking URLs at the clean URL, or noindex them.",
+          "url": "https://shop.example.com/product-category/shirts/?orderby=price&filter_color=red"
+        },
+        {
+          "code": "BREADCRUMB_MISSING",
+          "severity": "medium",
+          "category": "Structured data",
+          "title": "No BreadcrumbList markup",
+          "detail": "",
+          "fix": "Add BreadcrumbList structured data mirroring the visible breadcrumb trail.",
+          "url": "https://shop.example.com/product-category/shirts/?orderby=price&filter_color=red"
+        }
+      ]
+    },
+    {
+      "url": "https://shop.example.com/bn/product/scarf/",
+      "type": "product",
+      "status": 200,
+      "score": 70.0,
+      "issues": [
+        {
+          "code": "SCHEMA_MISSING",
+          "severity": "high",
+          "category": "Structured data",
+          "title": "No Product structured data",
+          "detail": "",
+          "fix": "Add Product JSON-LD with name, image and offers (price, priceCurrency, availability).",
+          "url": "https://shop.example.com/bn/product/scarf/"
+        },
+        {
+          "code": "META_DESC_MISSING",
+          "severity": "medium",
+          "category": "On-page",
+          "title": "Meta description missing",
+          "detail": "",
+          "fix": "Write a unique meta description of roughly 120-160 characters.",
+          "url": "https://shop.example.com/bn/product/scarf/"
+        },
+        {
+          "code": "BREADCRUMB_MISSING",
+          "severity": "medium",
+          "category": "Structured data",
+          "title": "No BreadcrumbList markup",
+          "detail": "",
+          "fix": "Add BreadcrumbList structured data mirroring the visible breadcrumb trail.",
+          "url": "https://shop.example.com/bn/product/scarf/"
+        },
+        {
+          "code": "THIN_DESCRIPTION",
+          "severity": "medium",
+          "category": "Content",
+          "title": "Product description is thin",
+          "detail": "0 words (minimum 50)",
+          "fix": "Write a unique description covering materials, size, use cases and care; aim for 100+ words.",
+          "url": "https://shop.example.com/bn/product/scarf/"
+        }
+      ]
+    },
+    {
+      "url": "https://shop.example.com/product/scarf/",
+      "type": "product",
+      "status": 200,
+      "score": 58.0,
+      "issues": [
+        {
+          "code": "SCHEMA_MISSING",
+          "severity": "high",
+          "category": "Structured data",
+          "title": "No Product structured data",
+          "detail": "",
+          "fix": "Add Product JSON-LD with name, image and offers (price, priceCurrency, availability).",
+          "url": "https://shop.example.com/product/scarf/"
+        },
+        {
+          "code": "META_DESC_MISSING",
+          "severity": "medium",
+          "category": "On-page",
+          "title": "Meta description missing",
+          "detail": "",
+          "fix": "Write a unique meta description of roughly 120-160 characters.",
+          "url": "https://shop.example.com/product/scarf/"
+        },
+        {
+          "code": "BREADCRUMB_MISSING",
+          "severity": "medium",
+          "category": "Structured data",
+          "title": "No BreadcrumbList markup",
+          "detail": "",
+          "fix": "Add BreadcrumbList structured data mirroring the visible breadcrumb trail.",
+          "url": "https://shop.example.com/product/scarf/"
+        },
+        {
+          "code": "HREFLANG_INVALID_CODE",
+          "severity": "medium",
+          "category": "hreflang",
+          "title": "Invalid hreflang language/region code",
+          "detail": "english",
+          "fix": "Use ISO 639-1 language codes with optional ISO 3166-1 region, e.g. en-GB, or x-default.",
+          "url": "https://shop.example.com/product/scarf/"
+        },
+        {
+          "code": "HREFLANG_NOT_ABSOLUTE",
+          "severity": "medium",
+          "category": "hreflang",
+          "title": "hreflang URL is not absolute",
+          "detail": "",
+          "fix": "Use fully qualified URLs in hreflang annotations.",
+          "url": "https://shop.example.com/product/scarf/"
+        },
+        {
+          "code": "THIN_DESCRIPTION",
+          "severity": "medium",
+          "category": "Content",
+          "title": "Product description is thin",
+          "detail": "0 words (minimum 50)",
+          "fix": "Write a unique description covering materials, size, use cases and care; aim for 100+ words.",
+          "url": "https://shop.example.com/product/scarf/"
+        },
+        {
+          "code": "HREFLANG_NO_XDEFAULT",
+          "severity": "info",
+          "category": "hreflang",
+          "title": "No x-default hreflang",
+          "detail": "",
+          "fix": "Consider adding an x-default for visitors who match no listed locale.",
+          "url": "https://shop.example.com/product/scarf/"
+        }
+      ]
+    },
+    {
+      "url": "https://shop.example.com/product/ceramic-mug/",
+      "type": "product",
+      "status": 200,
+      "score": 70.0,
+      "issues": [
+        {
+          "code": "BREADCRUMB_MISSING",
+          "severity": "medium",
+          "category": "Structured data",
+          "title": "No BreadcrumbList markup",
+          "detail": "",
+          "fix": "Add BreadcrumbList structured data mirroring the visible breadcrumb trail.",
+          "url": "https://shop.example.com/product/ceramic-mug/"
+        },
+        {
+          "code": "REVIEW_COUNT_INCONSISTENT",
+          "severity": "medium",
+          "category": "Structured data",
+          "title": "Review markup count exceeds the aggregateRating count",
+          "detail": "3 reviews marked up, count says 2",
+          "fix": "Make reviewCount/ratingCount at least as large as the number of marked-up reviews.",
+          "url": "https://shop.example.com/product/ceramic-mug/"
+        },
+        {
+          "code": "REVIEW_INVALID",
+          "severity": "medium",
+          "category": "Structured data",
+          "title": "Review is missing author or rating",
+          "detail": "1 of 3 reviews incomplete",
+          "fix": "Each Review needs an author and reviewRating.ratingValue.",
+          "url": "https://shop.example.com/product/ceramic-mug/"
+        },
+        {
+          "code": "THIN_DESCRIPTION",
+          "severity": "medium",
+          "category": "Content",
+          "title": "Product description is thin",
+          "detail": "0 words (minimum 50)",
+          "fix": "Write a unique description covering materials, size, use cases and care; aim for 100+ words.",
+          "url": "https://shop.example.com/product/ceramic-mug/"
+        },
+        {
+          "code": "PRODUCT_DESCRIPTION_MISSING",
+          "severity": "low",
+          "category": "Structured data",
+          "title": "Product description missing in markup",
+          "detail": "",
+          "fix": "Add a description property to the Product markup.",
+          "url": "https://shop.example.com/product/ceramic-mug/"
+        },
+        {
+          "code": "PRICE_VALID_UNTIL_MISSING",
+          "severity": "low",
+          "category": "Structured data",
+          "title": "priceValidUntil missing",
+          "detail": "",
+          "fix": "Add offers.priceValidUntil (ISO 8601 date) so price snippets stay eligible.",
+          "url": "https://shop.example.com/product/ceramic-mug/"
+        },
+        {
+          "code": "SHIPPING_RETURN_MISSING",
+          "severity": "low",
+          "category": "Structured data",
+          "title": "No shipping or return policy markup",
+          "detail": "",
+          "fix": "Add shippingDetails and hasMerchantReturnPolicy to the Offer for merchant listing features.",
+          "url": "https://shop.example.com/product/ceramic-mug/"
+        }
+      ]
+    },
+    {
+      "url": "https://shop.example.com/product/hidden-item/",
+      "type": "product",
+      "status": 200,
+      "score": 45.0,
+      "issues": [
+        {
+          "code": "NOINDEX_PRODUCT",
+          "severity": "critical",
+          "category": "Indexing",
+          "title": "Product page is set to noindex",
+          "detail": "robots: follow, noindex",
+          "fix": "Remove the noindex directive (meta robots or X-Robots-Tag) from sellable product pages.",
+          "url": "https://shop.example.com/product/hidden-item/"
+        },
+        {
+          "code": "SCHEMA_MISSING",
+          "severity": "high",
+          "category": "Structured data",
+          "title": "No Product structured data",
+          "detail": "",
+          "fix": "Add Product JSON-LD with name, image and offers (price, priceCurrency, availability).",
+          "url": "https://shop.example.com/product/hidden-item/"
+        },
+        {
+          "code": "META_DESC_MISSING",
+          "severity": "medium",
+          "category": "On-page",
+          "title": "Meta description missing",
+          "detail": "",
+          "fix": "Write a unique meta description of roughly 120-160 characters.",
+          "url": "https://shop.example.com/product/hidden-item/"
+        },
+        {
+          "code": "BREADCRUMB_MISSING",
+          "severity": "medium",
+          "category": "Structured data",
+          "title": "No BreadcrumbList markup",
+          "detail": "",
+          "fix": "Add BreadcrumbList structured data mirroring the visible breadcrumb trail.",
+          "url": "https://shop.example.com/product/hidden-item/"
+        },
+        {
+          "code": "THIN_DESCRIPTION",
+          "severity": "medium",
+          "category": "Content",
+          "title": "Product description is thin",
+          "detail": "0 words (minimum 50)",
+          "fix": "Write a unique description covering materials, size, use cases and care; aim for 100+ words.",
+          "url": "https://shop.example.com/product/hidden-item/"
+        }
+      ]
+    },
+    {
+      "url": "https://store.example.com/products/leather-wallet",
+      "type": "product",
+      "status": 200,
+      "score": 68.0,
+      "issues": [
+        {
+          "code": "PRICE_MISMATCH",
+          "severity": "high",
+          "category": "Consistency",
+          "title": "Visible price differs from structured-data price",
+          "detail": "markup 2500.00 vs page 2799.00",
+          "fix": "Make sure the structured-data price is the same price a shopper sees (watch for cached or tax-inclusive values).",
+          "url": "https://store.example.com/products/leather-wallet"
+        },
+        {
+          "code": "STOCK_MISMATCH",
+          "severity": "high",
+          "category": "Consistency",
+          "title": "Availability markup disagrees with page text",
+          "detail": "page says out of stock, markup says InStock",
+          "fix": "Drive the availability markup and the on-page stock message from the same stock status.",
+          "url": "https://store.example.com/products/leather-wallet"
+        },
+        {
+          "code": "THIN_DESCRIPTION",
+          "severity": "medium",
+          "category": "Content",
+          "title": "Product description is thin",
+          "detail": "4 words (minimum 50)",
+          "fix": "Write a unique description covering materials, size, use cases and care; aim for 100+ words.",
+          "url": "https://store.example.com/products/leather-wallet"
+        },
+        {
+          "code": "SHIPPING_RETURN_MISSING",
+          "severity": "low",
+          "category": "Structured data",
+          "title": "No shipping or return policy markup",
+          "detail": "",
+          "fix": "Add shippingDetails and hasMerchantReturnPolicy to the Offer for merchant listing features.",
+          "url": "https://store.example.com/products/leather-wallet"
+        }
+      ]
+    },
+    {
+      "url": "https://shop.example.com/product/cotton-tee/",
+      "type": "product",
+      "status": 200,
+      "score": 0.0,
+      "issues": [
+        {
+          "code": "GTIN_INVALID",
+          "severity": "high",
+          "category": "Structured data",
+          "title": "GTIN fails length or check-digit validation",
+          "detail": "gtin13=4006381333932: bad check digit (expected 1)",
+          "fix": "Correct the GTIN; it must be 8, 12, 13 or 14 digits with a valid check digit.",
+          "url": "https://shop.example.com/product/cotton-tee/"
+        },
+        {
+          "code": "PRICE_INVALID",
+          "severity": "high",
+          "category": "Structured data",
+          "title": "Offer price is not a valid number",
+          "detail": "price='1,299.00'",
+          "fix": "Use a plain decimal number without currency symbols or thousands separators.",
+          "url": "https://shop.example.com/product/cotton-tee/"
+        },
+        {
+          "code": "PRICE_CURRENCY_MISSING",
+          "severity": "high",
+          "category": "Structured data",
+          "title": "priceCurrency missing",
+          "detail": "",
+          "fix": "Add offers.priceCurrency as an ISO 4217 code such as BDT or USD.",
+          "url": "https://shop.example.com/product/cotton-tee/"
+        },
+        {
+          "code": "RATING_INVALID",
+          "severity": "high",
+          "category": "Structured data",
+          "title": "aggregateRating has an invalid ratingValue",
+          "detail": "ratingValue='6.5' (best 5.0)",
+          "fix": "Provide a numeric ratingValue within the worstRating..bestRating range.",
+          "url": "https://shop.example.com/product/cotton-tee/"
+        },
+        {
+          "code": "RATING_COUNT_MISSING",
+          "severity": "high",
+          "category": "Structured data",
+          "title": "aggregateRating has no ratingCount or reviewCount",
+          "detail": "",
+          "fix": "Add ratingCount or reviewCount to aggregateRating.",
+          "url": "https://shop.example.com/product/cotton-tee/"
+        },
+        {
+          "code": "CANONICAL_MISSING",
+          "severity": "medium",
+          "category": "Canonical",
+          "title": "No canonical URL",
+          "detail": "",
+          "fix": "Add a self-referencing rel=canonical to every indexable page.",
+          "url": "https://shop.example.com/product/cotton-tee/"
+        },
+        {
+          "code": "IMAGE_ALT_LOW",
+          "severity": "medium",
+          "category": "Images",
+          "title": "Low image alt-text coverage",
+          "detail": "1 of 3 images have alt text (33%)",
+          "fix": "Add descriptive alt text to product images (name, colour, angle).",
+          "url": "https://shop.example.com/product/cotton-tee/"
+        },
+        {
+          "code": "BREADCRUMB_MISSING",
+          "severity": "medium",
+          "category": "Structured data",
+          "title": "No BreadcrumbList markup",
+          "detail": "",
+          "fix": "Add BreadcrumbList structured data mirroring the visible breadcrumb trail.",
+          "url": "https://shop.example.com/product/cotton-tee/"
+        },
+        {
+          "code": "BRAND_MISSING",
+          "severity": "medium",
+          "category": "Structured data",
+          "title": "Brand missing",
+          "detail": "",
+          "fix": "Add brand (a Brand object with name) to the Product markup.",
+          "url": "https://shop.example.com/product/cotton-tee/"
+        },
+        {
+          "code": "AVAILABILITY_INVALID",
+          "severity": "medium",
+          "category": "Structured data",
+          "title": "Unrecognised availability value",
+          "detail": "availability='In stock'",
+          "fix": "Use a schema.org ItemAvailability URL, for example https://schema.org/InStock.",
+          "url": "https://shop.example.com/product/cotton-tee/"
+        },
+        {
+          "code": "PRICE_VALID_UNTIL_EXPIRED",
+          "severity": "medium",
+          "category": "Structured data",
+          "title": "priceValidUntil is in the past",
+          "detail": "priceValidUntil=2020-01-01",
+          "fix": "Update priceValidUntil to a future date or generate it dynamically.",
+          "url": "https://shop.example.com/product/cotton-tee/"
+        },
+        {
+          "code": "THIN_DESCRIPTION",
+          "severity": "medium",
+          "category": "Content",
+          "title": "Product description is thin",
+          "detail": "2 words (minimum 50)",
+          "fix": "Write a unique description covering materials, size, use cases and care; aim for 100+ words.",
+          "url": "https://shop.example.com/product/cotton-tee/"
+        },
+        {
+          "code": "DUP_TITLE",
+          "severity": "medium",
+          "category": "Duplicate content",
+          "title": "Title is shared with other pages",
+          "detail": "shared with 1 other page(s), e.g. https://shop.example.com/product/cotton-tee-v2/",
+          "fix": "Make titles unique: product name, key attribute and brand.",
+          "url": "https://shop.example.com/product/cotton-tee/"
+        },
+        {
+          "code": "DUP_DESCRIPTION",
+          "severity": "medium",
+          "category": "Duplicate content",
+          "title": "Meta description is shared with other pages",
+          "detail": "shared with 1 other page(s), e.g. https://shop.example.com/product/cotton-tee-v2/",
+          "fix": "Write unique meta descriptions or let a template include the product name and attributes.",
+          "url": "https://shop.example.com/product/cotton-tee/"
+        },
+        {
+          "code": "H1_MULTIPLE",
+          "severity": "low",
+          "category": "On-page",
+          "title": "More than one H1 heading",
+          "detail": "2 H1 elements",
+          "fix": "Use a single H1 per page.",
+          "url": "https://shop.example.com/product/cotton-tee/"
+        },
+        {
+          "code": "PRODUCT_DESCRIPTION_MISSING",
+          "severity": "low",
+          "category": "Structured data",
+          "title": "Product description missing in markup",
+          "detail": "",
+          "fix": "Add a description property to the Product markup.",
+          "url": "https://shop.example.com/product/cotton-tee/"
+        },
+        {
+          "code": "SHIPPING_RETURN_MISSING",
+          "severity": "low",
+          "category": "Structured data",
+          "title": "No shipping or return policy markup",
+          "detail": "",
+          "fix": "Add shippingDetails and hasMerchantReturnPolicy to the Offer for merchant listing features.",
+          "url": "https://shop.example.com/product/cotton-tee/"
+        }
+      ]
+    },
+    {
+      "url": "https://shop.example.com/product/cotton-tee-v2/",
+      "type": "product",
+      "status": 200,
+      "score": 64.0,
+      "issues": [
+        {
+          "code": "SCHEMA_MISSING",
+          "severity": "high",
+          "category": "Structured data",
+          "title": "No Product structured data",
+          "detail": "",
+          "fix": "Add Product JSON-LD with name, image and offers (price, priceCurrency, availability).",
+          "url": "https://shop.example.com/product/cotton-tee-v2/"
+        },
+        {
+          "code": "BREADCRUMB_MISSING",
+          "severity": "medium",
+          "category": "Structured data",
+          "title": "No BreadcrumbList markup",
+          "detail": "",
+          "fix": "Add BreadcrumbList structured data mirroring the visible breadcrumb trail.",
+          "url": "https://shop.example.com/product/cotton-tee-v2/"
+        },
+        {
+          "code": "THIN_DESCRIPTION",
+          "severity": "medium",
+          "category": "Content",
+          "title": "Product description is thin",
+          "detail": "0 words (minimum 50)",
+          "fix": "Write a unique description covering materials, size, use cases and care; aim for 100+ words.",
+          "url": "https://shop.example.com/product/cotton-tee-v2/"
+        },
+        {
+          "code": "DUP_TITLE",
+          "severity": "medium",
+          "category": "Duplicate content",
+          "title": "Title is shared with other pages",
+          "detail": "shared with 1 other page(s), e.g. https://shop.example.com/product/cotton-tee/",
+          "fix": "Make titles unique: product name, key attribute and brand.",
+          "url": "https://shop.example.com/product/cotton-tee-v2/"
+        },
+        {
+          "code": "DUP_DESCRIPTION",
+          "severity": "medium",
+          "category": "Duplicate content",
+          "title": "Meta description is shared with other pages",
+          "detail": "shared with 1 other page(s), e.g. https://shop.example.com/product/cotton-tee/",
+          "fix": "Write unique meta descriptions or let a template include the product name and attributes.",
+          "url": "https://shop.example.com/product/cotton-tee-v2/"
+        }
+      ]
+    },
+    {
+      "url": "https://shop.example.com/product/linen-shirt/",
+      "type": "product",
+      "status": 200,
+      "score": 100.0,
+      "issues": []
+    }
+  ],
+  "skipped": []
+}
