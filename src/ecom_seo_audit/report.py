@@ -14,6 +14,9 @@ from .audit import AuditResult
 
 CSV_FIELDS = ["url", "page_type", "page_score", "severity", "code", "category", "title", "detail", "fix"]
 
+FORMATS = ("html", "csv", "json", "markdown")
+FILE_EXTENSIONS = {"markdown": "md"}
+
 HTML_TEMPLATE = """<!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -155,6 +158,55 @@ def to_csv(result: AuditResult) -> str:
     return buf.getvalue()
 
 
+def _md(value: Any) -> str:
+    """Make untrusted text safe inside a Markdown table cell or line."""
+    text = " ".join(str(value).split())
+    for ch in ("\\", "|", "`", "<", ">", "[", "]"):
+        text = text.replace(ch, "\\" + ch)
+    return text
+
+
+def to_markdown(result: AuditResult, max_fixes: int = 20, max_pages: int = 15) -> str:
+    """A compact summary meant to be pasted into a GitHub issue or PR comment.
+
+    GitHub rejects bodies over 65,536 characters, so the fix and page lists are capped
+    (the full detail stays in the HTML/CSV/JSON reports).
+    """
+    lines = [
+        "## E-commerce SEO audit",
+        "",
+        "**Score: %s (%s)** &middot; %d pages audited" % (result.score, result.grade, result.total_pages)
+        + (" &middot; %d skipped" % len(result.skipped) if result.skipped else ""),
+        "",
+        "| Critical | High | Medium | Low | Info |",
+        "| ---: | ---: | ---: | ---: | ---: |",
+        "| " + " | ".join(str(result.severity_counts.get(s, 0)) for s in ("critical", "high", "medium", "low", "info")) + " |",
+        "",
+        "### Prioritised fixes",
+        "",
+    ]
+    if result.fixes:
+        lines += ["| # | Severity | Issue | Pages | Est. gain |", "| ---: | --- | --- | ---: | ---: |"]
+        for idx, f in enumerate(result.fixes[:max_fixes], 1):
+            lines.append("| %d | %s | %s (`%s`) | %d | +%s |" % (
+                idx, f.severity, _md(f.title), f.code, f.pages_affected, f.score_gain))
+        if len(result.fixes) > max_fixes:
+            lines += ["", "_%d more fixes in the full report._" % (len(result.fixes) - max_fixes)]
+    else:
+        lines.append("No issues found.")
+
+    worst = sorted((p for p in result.pages if p.issues), key=lambda p: (p.score, p.url))[:max_pages]
+    if worst:
+        lines += ["", "### Lowest-scoring pages", "", "| Score | Page | Issues |", "| ---: | --- | ---: |"]
+        for p in worst:
+            lines.append("| %d | %s | %d |" % (p.score, _md(p.url), len(p.issues)))
+    if result.skipped:
+        lines += ["", "### Skipped", ""]
+        lines += ["- %s: %s" % (_md(p.url), _md(p.note)) for p in result.skipped[:max_pages]]
+    lines += ["", "<sub>Generated %s by ecom-seo-audit %s</sub>" % (result.generated_at, __version__), ""]
+    return "\n".join(lines)
+
+
 def to_html(result: AuditResult) -> str:
     env = Environment(autoescape=select_autoescape(default=True, default_for_string=True))
     template = env.from_string(HTML_TEMPLATE)
@@ -169,9 +221,9 @@ def to_html(result: AuditResult) -> str:
 def write_reports(result: AuditResult, out_dir: str, formats: List[str]) -> List[str]:
     os.makedirs(out_dir, exist_ok=True)
     written = []
-    renderers = {"html": to_html, "csv": to_csv, "json": to_json}
+    renderers = {"html": to_html, "csv": to_csv, "json": to_json, "markdown": to_markdown}
     for fmt in formats:
-        path = os.path.join(out_dir, "report." + fmt)
+        path = os.path.join(out_dir, "report." + FILE_EXTENSIONS.get(fmt, fmt))
         with open(path, "w", encoding="utf-8", newline="") as fh:
             fh.write(renderers[fmt](result))
         written.append(path)

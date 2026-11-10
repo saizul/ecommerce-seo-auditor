@@ -2,6 +2,7 @@ import csv
 import io
 import json
 import os
+import re
 
 import pytest
 
@@ -11,7 +12,7 @@ from ecom_seo_audit.checks import AuditConfig
 from ecom_seo_audit.cli import main
 from ecom_seo_audit.extract import Page, parse_page
 from ecom_seo_audit.issues import CATALOG, SEVERITY_WEIGHTS, make_issue
-from ecom_seo_audit.report import to_csv, to_dict, to_html, to_json, write_reports
+from ecom_seo_audit.report import to_csv, to_dict, to_html, to_json, to_markdown, write_reports
 
 
 @pytest.fixture
@@ -138,6 +139,53 @@ def test_html_report_escapes_markup(cfg):
     page.url = "https://a.com/product/<script>alert(1)</script>/"
     html = to_html(run_audit([page], cfg))
     assert "<script>alert(1)</script>" not in html and "&lt;script&gt;" in html
+
+
+def test_markdown_report_summary(result):
+    md = to_markdown(result)
+    assert md.startswith("## E-commerce SEO audit")
+    assert "**Score: %s (%s)**" % (result.score, result.grade) in md
+    assert "| Critical | High | Medium | Low | Info |" in md
+    assert "### Prioritised fixes" in md and "`PRICE_MISMATCH`" in md
+    assert "### Lowest-scoring pages" in md
+
+
+def test_markdown_report_escapes_untrusted_text(cfg):
+    page = parse_page("https://a.com/product/x/", make_html(good_product(offers=None), url="https://a.com/p/"))
+    page.url = "https://a.com/product/x|y`<img src=x>\nz/"
+    md = to_markdown(run_audit([page], cfg))
+    assert not re.search(r"(?<!\\)<img", md)
+    assert "x\\|y\\`\\<img" in md
+    row = [ln for ln in md.splitlines() if "a.com/product" in ln][0]
+    assert row.count("|") - row.count("\\|") == 4
+
+
+def test_markdown_report_caps_lists(result):
+    md = to_markdown(result, max_fixes=1, max_pages=2)
+    assert "more fixes in the full report" in md
+    pages_section = md.split("### Lowest-scoring pages")[1]
+    assert len([ln for ln in pages_section.splitlines() if ln.startswith("| ") and ln[2].isdigit()]) <= 2
+
+
+def test_markdown_report_clean_site(cfg):
+    page = parse_page("https://a.com/product/x/", make_html(good_product(), url="https://a.com/product/x/"))
+    res = run_audit([page], cfg)
+    res.fixes = []
+    for p in res.pages:
+        p.issues = []
+    md = to_markdown(res)
+    assert "No issues found." in md and "Lowest-scoring" not in md
+
+
+def test_write_reports_markdown_uses_md_extension(result, tmp_path):
+    paths = write_reports(result, str(tmp_path / "out"), ["markdown"])
+    assert [os.path.basename(p) for p in paths] == ["report.md"]
+    assert open(paths[0], encoding="utf-8").read().startswith("## E-commerce SEO audit")
+
+
+def test_cli_markdown_format(tmp_path):
+    assert main(["--offline", FIXTURES, "--format", "markdown", "--out", str(tmp_path), "--quiet"]) == 0
+    assert (tmp_path / "report.md").exists() and not (tmp_path / "report.html").exists()
 
 
 def test_write_reports_creates_files(result, tmp_path):

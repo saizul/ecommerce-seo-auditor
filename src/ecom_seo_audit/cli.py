@@ -17,7 +17,7 @@ from .extract import Page, parse_page
 from .fetch import DEFAULT_USER_AGENT, Fetcher
 from .issues import CATALOG, SEVERITY_ORDER
 from .offline import load_offline
-from .report import write_reports
+from .report import FORMATS, write_reports
 from .sitemap import SitemapError, load_sitemap_urls
 
 
@@ -50,7 +50,7 @@ def build_parser() -> argparse.ArgumentParser:
     crawl.add_argument("--user-agent", default=DEFAULT_USER_AGENT)
     out = p.add_argument_group("output")
     out.add_argument("--out", default="audit-report", help="report directory (default audit-report)")
-    out.add_argument("--format", default="html,csv,json", help="comma list of html,csv,json")
+    out.add_argument("--format", default="html,csv,json", help="comma list of html,csv,json,markdown")
     out.add_argument("--min-score", type=float, default=None, help="exit with status 1 if the site score is lower")
     out.add_argument("--quiet", action="store_true")
     thr = p.add_argument_group("thresholds")
@@ -148,8 +148,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         console.print("[red]Provide URLs, --urls, --sitemap or --offline.[/red]")
         return 2
     formats = [f.strip() for f in args.format.split(",") if f.strip()]
-    if not formats or any(f not in ("html", "csv", "json") for f in formats):
-        console.print("[red]--format must be a comma list of html, csv, json[/red]")
+    if not formats or any(f not in FORMATS for f in formats):
+        console.print("[red]--format must be a comma list of html, csv, json, markdown[/red]")
         return 2
     try:
         pages = collect_pages(args, console)
