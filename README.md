@@ -49,7 +49,7 @@ ecom-seo-audit --offline examples/demo-site --out audit-report
 ecom-seo-audit --urls urls.txt --min-score 80
 ```
 
-Reports are written to `--out` (default `audit-report/`): `report.html`, `report.csv`, `report.json`. A pre-generated example lives in [`examples/sample-report`](examples/sample-report).
+Reports are written to `--out` (default `audit-report/`): `report.html`, `report.csv`, `report.json` (plus `report.md` with `--format markdown`). A pre-generated example lives in [`examples/sample-report`](examples/sample-report).
 
 ### Options
 
@@ -63,7 +63,7 @@ Reports are written to `--out` (default `audit-report/`): `report.html`, `report
 | `--delay`, `--concurrency`, `--timeout` | Politeness controls (defaults: 1 s per host, 2 workers, 20 s) |
 | `--cache-dir`, `--cache-ttl`, `--no-cache` | Response cache (default `.seo-cache`, 24 h) |
 | `--no-robots` | Ignore robots.txt. Only for sites you own or have permission to crawl |
-| `--format html,csv,json`, `--out DIR` | Report formats and directory |
+| `--format html,csv,json,markdown`, `--out DIR` | Report formats and directory. `markdown` writes a compact `report.md` to paste into a GitHub issue or PR comment |
 | `--min-score N` | Exit with status 1 when the site score is below N |
 | `--min-description-words`, `--alt-threshold`, `--title-max` | Tune thresholds |
 
