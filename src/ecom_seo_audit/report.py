@@ -73,6 +73,18 @@ code{background:#eef0f4;padding:1px 5px;border-radius:4px;font-size:13px}
 </details>
 {% endfor %}
 
+{% if r.baseline %}{% set b = r.baseline %}
+<h2>Changes since baseline</h2>
+<p>Score {{ b.score_before if b.score_before is not none else "n/a" }} &rarr; {{ b.score_after }}{% if b.score_delta is not none %} ({{ "%+.1f"|format(b.score_delta) }}){% endif %}
+&middot; <b>{{ b.new_issues|length }} new</b> &middot; {{ b.resolved|length }} resolved &middot; {{ b.unchanged }} unchanged
+{% if b.not_reaudited %}<span class="muted">&middot; {{ b.not_reaudited }} on pages not audited this run</span>{% endif %}</p>
+{% if b.new_issues %}<table><tr><th>Severity</th><th>New issue</th><th>Page</th></tr>
+{% for i in b.new_issues %}<tr><td><span class="sev sev-{{ i.severity }}">{{ i.severity }}</span></td>
+<td>{{ i.title }} <code>{{ i.code }}</code></td><td class="url">{{ i.url }}</td></tr>{% endfor %}</table>{% endif %}
+{% if b.resolved %}<details><summary>{{ b.resolved|length }} resolved</summary><table>
+{% for e in b.resolved %}<tr><td><code>{{ e.code }}</code></td><td class="url">{{ e.url }}</td></tr>{% endfor %}</table></details>{% endif %}
+{% endif %}
+
 {% if r.skipped %}<h2>Skipped</h2><ul>{% for p in r.skipped %}<li class="url">{{ p.url }} &mdash; {{ p.note }}</li>{% endfor %}</ul>{% endif %}
 </main></body></html>
 """
@@ -84,7 +96,7 @@ def _grade(score) -> str:
 
 
 def to_dict(result: AuditResult) -> Dict[str, Any]:
-    return {
+    data = {
         "tool": "ecom-seo-audit",
         "version": __version__,
         "generated_at": result.generated_at,
@@ -122,6 +134,9 @@ def to_dict(result: AuditResult) -> Dict[str, Any]:
         ],
         "skipped": [{"url": p.url, "reason": p.note} for p in result.skipped],
     }
+    if result.baseline is not None:
+        data["baseline"] = result.baseline.as_dict()
+    return data
 
 
 def to_json(result: AuditResult) -> str:
@@ -166,6 +181,31 @@ def _md(value: Any) -> str:
     return text
 
 
+def _signed(value) -> str:
+    return "n/a" if value is None else ("%+.1f" % value)
+
+
+def _markdown_baseline(diff, limit: int) -> List[str]:
+    lines = [
+        "",
+        "### Changes since baseline",
+        "",
+        "Score %s &rarr; %s (%s) &middot; **%d new** &middot; %d resolved &middot; %d unchanged" % (
+            "n/a" if diff.score_before is None else diff.score_before, diff.score_after,
+            _signed(diff.score_delta), len(diff.new_issues), len(diff.resolved), diff.unchanged),
+    ]
+    if diff.not_reaudited:
+        lines.append("")
+        lines.append("_%d baseline issue(s) on pages not audited in this run were left out._" % diff.not_reaudited)
+    if diff.new_issues:
+        lines += ["", "| Severity | New issue | Page |", "| --- | --- | --- |"]
+        for i in diff.new_issues[:limit]:
+            lines.append("| %s | %s (`%s`) | %s |" % (i.severity, _md(i.title), i.code, _md(i.url)))
+        if len(diff.new_issues) > limit:
+            lines += ["", "_%d more new issues in the full report._" % (len(diff.new_issues) - limit)]
+    return lines
+
+
 def to_markdown(result: AuditResult, max_fixes: int = 20, max_pages: int = 15) -> str:
     """A compact summary meant to be pasted into a GitHub issue or PR comment.
 
@@ -200,6 +240,8 @@ def to_markdown(result: AuditResult, max_fixes: int = 20, max_pages: int = 15) -
         lines += ["", "### Lowest-scoring pages", "", "| Score | Page | Issues |", "| ---: | --- | ---: |"]
         for p in worst:
             lines.append("| %d | %s | %d |" % (p.score, _md(p.url), len(p.issues)))
+    if result.baseline is not None:
+        lines += _markdown_baseline(result.baseline, max_pages)
     if result.skipped:
         lines += ["", "### Skipped", ""]
         lines += ["- %s: %s" % (_md(p.url), _md(p.note)) for p in result.skipped[:max_pages]]

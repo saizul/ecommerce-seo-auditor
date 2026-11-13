@@ -8,6 +8,8 @@ All notable changes to this project are documented here. The format follows
 
 ### Added
 - `--format markdown` writes `report.md`, a compact summary (score, severity counts, top fixes, lowest-scoring pages) sized for a GitHub issue or PR comment. Untrusted URLs and titles are escaped.
+- `--fail-on <severity>` exits with status 1 when any issue of that severity or worse is found, for CI gating beyond `--min-score`.
+- `--baseline report.json` compares a run with a previous JSON report: new, resolved and unchanged issues (matched by URL and code) appear in the console and in the JSON, Markdown and HTML reports. With a baseline, `--fail-on` only counts new issues, and pages not audited in the current run are never reported as resolved.
 
 ## [0.1.0] - 2026-11-09
 
