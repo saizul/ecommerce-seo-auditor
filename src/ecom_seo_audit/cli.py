@@ -12,6 +12,7 @@ from rich.table import Table
 
 from . import __version__
 from .audit import run_audit
+from .baseline import BaselineError, compare, issues_at_or_above, load_baseline
 from .checks import AuditConfig
 from .extract import Page, parse_page
 from .fetch import DEFAULT_USER_AGENT, Fetcher
@@ -53,6 +54,12 @@ def build_parser() -> argparse.ArgumentParser:
     out.add_argument("--format", default="html,csv,json", help="comma list of html,csv,json,markdown")
     out.add_argument("--min-score", type=float, default=None, help="exit with status 1 if the site score is lower")
     out.add_argument("--quiet", action="store_true")
+    gate = p.add_argument_group("CI gating")
+    gate.add_argument("--baseline", metavar="REPORT_JSON",
+                      help="previous report.json; report new and resolved issues against it")
+    gate.add_argument("--fail-on", choices=SEVERITY_ORDER, default=None, metavar="SEVERITY",
+                      help="exit with status 1 if any issue of this severity or worse is found "
+                           "(only new issues when --baseline is given). One of: " + ", ".join(SEVERITY_ORDER))
     thr = p.add_argument_group("thresholds")
     thr.add_argument("--min-description-words", type=int, default=50)
     thr.add_argument("--alt-threshold", type=float, default=0.8, help="minimum alt-text coverage (0-1)")
@@ -151,6 +158,13 @@ def main(argv: Optional[List[str]] = None) -> int:
     if not formats or any(f not in FORMATS for f in formats):
         console.print("[red]--format must be a comma list of html, csv, json, markdown[/red]")
         return 2
+    baseline = None
+    if args.baseline:
+        try:
+            baseline = load_baseline(args.baseline)
+        except BaselineError as exc:
+            console.print("[red]Error:[/red] %s" % exc)
+            return 2
     try:
         pages = collect_pages(args, console)
     except (SitemapError, FileNotFoundError) as exc:
@@ -165,6 +179,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         page_type=args.type,
     )
     result = run_audit(pages, cfg)
+    if baseline is not None:
+        result.baseline = compare(result, baseline)
     written = write_reports(result, args.out, formats)
 
     console.print("\n[bold]Score: %s (%s)[/bold]  pages: %d  skipped: %d" % (
@@ -175,13 +191,42 @@ def main(argv: Optional[List[str]] = None) -> int:
     for f in result.fixes[:10]:
         table.add_row(f.severity, "%s (%s)" % (f.title, f.code), str(f.pages_affected), "+%s" % f.score_gain)
     console.print(table)
+    if result.baseline is not None:
+        _print_baseline(console, result.baseline)
     for path in written:
         console.print("wrote %s" % path)
 
+    status = 0
     if args.min_score is not None and result.score < args.min_score:
         console.print("[red]Score %s is below --min-score %s[/red]" % (result.score, args.min_score))
-        return 1
-    return 0
+        status = 1
+    if args.fail_on:
+        if result.baseline is not None:
+            pool, label = result.baseline.new_issues, "new issue(s)"
+        else:
+            pool, label = [i for p in result.pages for i in p.issues], "issue(s)"
+        failing = issues_at_or_above(pool, args.fail_on)
+        if failing:
+            console.print("[red]%d %s at severity %s or worse (--fail-on %s)[/red]" % (
+                len(failing), label, args.fail_on, args.fail_on))
+            status = 1
+    return status
+
+
+def _print_baseline(console: Console, diff) -> None:
+    delta = "" if diff.score_delta is None else " (%+.1f)" % diff.score_delta
+    console.print("\n[bold]Since baseline:[/bold] score %s -> %s%s, %d new, %d resolved, %d unchanged" % (
+        "n/a" if diff.score_before is None else diff.score_before, diff.score_after, delta,
+        len(diff.new_issues), len(diff.resolved), diff.unchanged))
+    if diff.not_reaudited:
+        console.print("[dim]%d baseline issue(s) on pages not audited this run were ignored[/dim]" % diff.not_reaudited)
+    if diff.new_issues:
+        table = Table(title="New issues")
+        for col in ("Severity", "Issue", "Page"):
+            table.add_column(col)
+        for i in diff.new_issues[:20]:
+            table.add_row(i.severity, "%s (%s)" % (i.title, i.code), i.url)
+        console.print(table)
 
 
 if __name__ == "__main__":

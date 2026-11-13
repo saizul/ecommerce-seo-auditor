@@ -6,6 +6,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Dict, List, Optional
 
+from .baseline import BaselineDiff
 from .checks import AuditConfig, check_page, check_site
 from .extract import Page
 from .issues import SEVERITY_ORDER, SEVERITY_WEIGHTS, Issue
@@ -45,6 +46,7 @@ class AuditResult:
     fixes: List[Fix]
     generated_at: str
     category_counts: Dict[str, int] = field(default_factory=dict)
+    baseline: Optional[BaselineDiff] = None
 
     @property
     def total_pages(self) -> int:

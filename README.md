@@ -47,6 +47,12 @@ ecom-seo-audit --offline examples/demo-site --out audit-report
 
 # Gate a CI job on the score
 ecom-seo-audit --urls urls.txt --min-score 80
+
+# Fail the build on any high or critical issue
+ecom-seo-audit --urls urls.txt --fail-on high
+
+# Fail only on issues that are new since a previous run
+ecom-seo-audit --urls urls.txt --baseline last-run/report.json --fail-on high --format json,markdown
 ```
 
 Reports are written to `--out` (default `audit-report/`): `report.html`, `report.csv`, `report.json` (plus `report.md` with `--format markdown`). A pre-generated example lives in [`examples/sample-report`](examples/sample-report).
@@ -65,9 +71,20 @@ Reports are written to `--out` (default `audit-report/`): `report.html`, `report
 | `--no-robots` | Ignore robots.txt. Only for sites you own or have permission to crawl |
 | `--format html,csv,json,markdown`, `--out DIR` | Report formats and directory. `markdown` writes a compact `report.md` to paste into a GitHub issue or PR comment |
 | `--min-score N` | Exit with status 1 when the site score is below N |
+| `--fail-on critical\|high\|medium\|low\|info` | Exit with status 1 when any issue of that severity or worse is found (only new issues when `--baseline` is set) |
+| `--baseline REPORT_JSON` | Compare with a previous `report.json` and report new, resolved and unchanged issues |
 | `--min-description-words`, `--alt-threshold`, `--title-max` | Tune thresholds |
 
-Exit codes: `0` success, `1` score below `--min-score`, `2` usage or input error.
+Exit codes: `0` success, `1` score below `--min-score` or an issue matched `--fail-on`, `2` usage or input error (including an unreadable or invalid `--baseline`).
+
+### Baselines and CI gating
+
+Existing stores rarely start clean, so failing a build on every known issue is not useful. Save a `report.json` from a known-good run (for example as a CI artifact from `main`) and pass it as `--baseline` on later runs:
+
+- Issues are matched by page URL and check code, so a changed detail (a different price, say) still counts as the same known issue.
+- The console, JSON (`baseline` key), Markdown and HTML reports gain a "Changes since baseline" section: score change, new issues, resolved issues and an unchanged count.
+- Baseline issues on pages that were not audited this time (filtered out, beyond `--max-pages`, or blocked by robots.txt) are counted separately and never reported as resolved.
+- With `--baseline`, `--fail-on` only looks at new issues; without it, `--fail-on` looks at every issue. `--min-score` and `--fail-on` can be combined.
 
 ### Offline mode and URLs
 
